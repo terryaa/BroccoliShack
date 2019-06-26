@@ -28,4 +28,7 @@ Tools & Frameworks used:
 : CentOS, Ubuntu
 
 - DevelopmentTool
-: Jupyter, Zeppling, RStudio
+: Jupyter, Zeppelin, RStudio
+
+- CommunicationTool
+: Trello, Slack, Spring SVM
