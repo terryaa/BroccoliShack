@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="recruit">
+
+<insert id="insert" parameterType="rvo">
+	  	insert into recruit values(
+	  	recruit_seq.nextVal,
+	  	#{member_id},
+	  	0,
+	  	#{recruit_title},
+	  	sysdate,
+	  	#{recruit_size},
+	  	#{recruit_career},
+	  	#{recruit_age},
+	  	#{recruit_area},
+	  	to_date(#{recruit_deadline}),
+	  	#{recruit_businessType},
+	  	to_date(#{recruit_startworkDate}),
+	  	to_date(#{recruit_endworkDate}),
+	  	#{recruit_startworkTime},
+	  	#{recruit_endworkTime},
+	    #{recruit_content},
+	  	#{recruit_address},
+	  	#{recruit_wide},
+	  	1,
+	  	#{recruit_info},
+	    #{recruit_salay}
+	  	)
+  	</insert>
+  	
+  	<select id="list" resultType="map">
+  	select * from recruit
+  </select>
+  
+  <select id="board" parameterType="string" resultType="map">
+  	select * from recruit where recruit_post_number=#{recruit_post_number}
+  </select>
+  
+  
+    <update id="views" parameterType="string">
+ 		update recruit set views = views+1 where recruit_post_number=#{recruit_post_number}
+ 	</update>
+ 	
+ 	<insert id="submit" parameterType="hashmap">
+	  	insert into matching(matching_number,recruit_post_number,matching_id,matching_date) values(
+	  	matching_seq.nextVal,
+	  	#{recruit_number},
+	  	#{uid},
+	  	sysdate	  	
+	  	)
+  	</insert>
+</mapper>

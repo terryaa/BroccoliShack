@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="map">
+	<select id="sum_manpower" resultType="map">	
+<![CDATA[
+select sum(nj.manpower) nj ,sum(cn.manpower) cn from 
+(select * from (select manpower,ym from manpower_nj order by ym desc) where rownum<=12 ) nj, 
+(select * from (select manpower,ym from manpower_cn order by ym desc) where rownum<=12 ) cn
+where nj.ym=cn.ym
+]]>
+	</select>
+	<select id="sum_rnn_manpower" resultType="map">	
+<![CDATA[
+select sum(nj.manpower) rnnnj ,sum(cn.manpower) rnncn from 
+(select * from (select manpower,ym from manpower_rnn_nj order by ym desc) where rownum<=12 ) nj, 
+(select * from (select manpower,ym from manpower_rnn_cn order by ym desc) where rownum<=12 ) cn
+where nj.ym=cn.ym
+]]>
+	</select>
+</mapper>
+  

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="colrelated" >
+ <select id="getcolrelated_cn_2002" parameterType="int" resultType="crvo">
+   <![CDATA[
+ select * from col_correlated_cn_2002_todb where ym > #{year}
+ ]]>
+ </select>
+  <select id="getcoeffients_cn_2002" resultType="crvo">
+ select * from coeffients_cn_2002
+ </select>
+ </mapper>

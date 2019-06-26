@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JNDI(Java Naming Directory Interface) -->
+<Context>
+	<Resource name="jdbc/myora" auth="Container"
+		type="javax.sql.DataSource"
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		url="jdbc:oracle:thin:@192.168.0.46:1521:xe" username="fp"
+		password="1234" maxActive="100" maxIdle="20" maxWait="-1" />
+	<!-- jdbc의 myora라는 이름을 가짐. -->
+	<!-- 역할은 컨테이너 -->
+	<!-- 타입은 데이터소스 -->
+	<!-- 중간은 연결하는 역할이므로 정보를 줌. -->
+	<!-- 최대 커넥션 20개 -->
+	<!-- 연결 커넥션 10개 -->
+</Context>

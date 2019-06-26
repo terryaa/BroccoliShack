@@ -1,0 +1,303 @@
+﻿-- ȸ�����̺�
+CREATE TABLE "Member" (
+	"member_id"           VARCHAR(255) NOT NULL, -- ���̵�
+	"member_name"         VARCHAR(255) NULL,     -- �̸�
+	"member_password"     VARCHAR(30)  NULL,     -- ��й�ȣ
+	"member_gender"       VARCHAR(1)   NULL,     -- ����
+	"member_join_date"    DATE         NULL     DEFAULT sysdate, -- ��������
+	"member_email"        VARCHAR(255) NULL,     -- �̸���
+	"member_job_search"   VARCHAR(1)   NULL,     -- ����/�������Ǻ�
+	"member_address"      VARCHAR(255) NULL,     -- �ּ�
+	"member_phonenumber"  VARCHAR(30)  NULL,     -- ��ȭ��ȣ
+	"member_searchcount"  NUMERIC(4)   NULL,     -- (����/����)Ƚ��
+	"active_check_number" NUMERIC(3)   NULL,     -- Ȱ��ȭüũ��ȣ
+	"member_number"       NUMERIC(30)  NULL      -- ������ȣ
+);
+
+-- ȸ�����̺� �⺻Ű
+CREATE UNIQUE INDEX "PK_Member"
+	ON "Member" ( -- ȸ�����̺�
+		"member_id" ASC -- ���̵�
+	);
+
+-- ȸ�����̺�
+ALTER TABLE "Member"
+	ADD
+		CONSTRAINT "PK_Member" -- ȸ�����̺� �⺻Ű
+		PRIMARY KEY (
+			"member_id" -- ���̵�
+		);
+
+-- �������̺�
+CREATE TABLE "Recruit" (
+	"recruit_post_number"      NUMERIC(30)  NOT NULL, -- ���ΰԽñ۹�ȣ
+	"member_id"                VARCHAR(255) NOT NULL, -- ���̵�
+	"views"                    NUMERIC(3)   NULL,     -- ��ȸ��
+	"recruit_title"            VARCHAR(255) NULL,     -- ��������
+	"recruit_registrationDate" DATE         NULL     DEFAULT sysdate, -- �����
+	"recruit_size"             NUMERIC(5)   NULL     DEFAULT 0, -- ���θ����ο�
+	"recruit_career"           VARCHAR(255) NULL     DEFAULT '��¹���', -- �����ڰ��
+	"recruit_age"              VARCHAR(255) NULL     DEFAULT '���̹���', -- �����ڿ���
+	"recruit_content"          VARCHAR(255) NULL,     -- ���γ���
+	"recruit_area"             VARCHAR(255) NULL,     -- ��������
+	"recruit_deadline"         DATE         NULL,     -- ���θ�����
+	"recruit_businessType"     VARCHAR(255) NULL,     -- ���θ�������
+	"recruit_startworkDate"    DATE         NULL     DEFAULT 1, -- �����۾����۳�¥
+	"recruit_endworkDate"      DATE         NULL,     -- ���γ��۾���¥
+	"recruit_startworkTime"    NUMERIC(2)   NULL,     -- �����۾����۽ð�
+	"recruit_endworkTime"      NUMERIC(2)   NULL,     -- �����۾����ð�
+	"recruit_info"             VARCHAR(255) NULL,     -- ������������
+	"recruit_address"          VARCHAR(255) NULL,     -- �������ּ�
+	"recruit_wide"             VARCHAR(255) NULL,     -- ����������(��������)
+	"recruit_salary"           VARCHAR(255) NULL      -- ���α޿�
+);
+
+-- �������̺� �⺻Ű
+CREATE UNIQUE INDEX "PK_Recruit"
+	ON "Recruit" ( -- �������̺�
+		"recruit_post_number" ASC -- ���ΰԽñ۹�ȣ
+	);
+
+-- �������̺�
+ALTER TABLE "Recruit"
+	ADD
+		CONSTRAINT "PK_Recruit" -- �������̺� �⺻Ű
+		PRIMARY KEY (
+			"recruit_post_number" -- ���ΰԽñ۹�ȣ
+		);
+
+-- �������̺�
+CREATE TABLE "Apply" (
+	"apply_post_number"      NUMERIC(30)  NOT NULL, -- �����Խù���ȣ
+	"member_id"              VARCHAR(255) NOT NULL, -- ���̵�
+	"views"                  NUMERIC(3)   NULL     DEFAULT 0, -- ��ȸ��
+	"apply_registrationDate" DATE         NULL     DEFAULT sysdate, -- �����
+	"apply_title"            VARCHAR(255) NULL,     -- ��������
+	"apply_deadline"         DATE         NULL,     -- ����������
+	"apply_area"             VARCHAR(255) NULL,     -- ��������ٹ�����
+	"apply_crops"            VARCHAR(255) NULL,     -- ��������۹�
+	"apply_startworktime"    NUMERIC(2)   NULL,     -- ��������ٹ����۽ð�
+	"apply_endworktime"      NUMERIC(2)   NULL,     -- ��������ٹ����ð�
+	"apply_salay"            NUMERIC(10)  NULL     DEFAULT 0, -- ��������޿�
+	"apply_career"           VARCHAR(255) NULL,     -- �����ڰ��
+	"apply_content"          VARCHAR(255) NULL      -- ��������
+);
+
+-- �������̺� �⺻Ű
+CREATE UNIQUE INDEX "PK_Apply"
+	ON "Apply" ( -- �������̺�
+		"apply_post_number" ASC -- �����Խù���ȣ
+	);
+
+-- �������̺�
+ALTER TABLE "Apply"
+	ADD
+		CONSTRAINT "PK_Apply" -- �������̺� �⺻Ű
+		PRIMARY KEY (
+			"apply_post_number" -- �����Խù���ȣ
+		);
+
+-- ��Ī���̺�
+CREATE TABLE "Matching" (
+	"matching_number"     NUMERIC(4)   NOT NULL, -- ��Ī��ȣ
+	"apply_post_number"   NUMERIC(30)  NULL,     -- �����Խù���ȣ
+	"recruit_post_number" NUMERIC(30)  NULL,     -- ���ΰԽñ۹�ȣ
+	"apply_id"            VARCHAR(255) NULL      -- �������̵�
+);
+
+-- ��Ī���̺� �⺻Ű
+CREATE UNIQUE INDEX "PK_Matching"
+	ON "Matching" ( -- ��Ī���̺�
+		"matching_number" ASC -- ��Ī��ȣ
+	);
+
+-- ��Ī���̺�
+ALTER TABLE "Matching"
+	ADD
+		CONSTRAINT "PK_Matching" -- ��Ī���̺� �⺻Ű
+		PRIMARY KEY (
+			"matching_number" -- ��Ī��ȣ
+		);
+
+-- �������̺�
+ALTER TABLE "Recruit"
+	ADD
+		CONSTRAINT "FK_Member_TO_Recruit" -- ȸ�����̺� -> �������̺�
+		FOREIGN KEY (
+			"member_id" -- ���̵�
+		)
+		REFERENCES "Member" ( -- ȸ�����̺�
+			"member_id" -- ���̵�
+		);
+
+-- �������̺�
+ALTER TABLE "Apply"
+	ADD
+		CONSTRAINT "FK_Member_TO_Apply" -- ȸ�����̺� -> �������̺�
+		FOREIGN KEY (
+			"member_id" -- ���̵�
+		)
+		REFERENCES "Member" ( -- ȸ�����̺�
+			"member_id" -- ���̵�
+		);
+
+-- ��Ī���̺�
+ALTER TABLE "Matching"
+	ADD
+		CONSTRAINT "FK_Apply_TO_Matching" -- �������̺� -> ��Ī���̺�
+		FOREIGN KEY (
+			"apply_post_number" -- �����Խù���ȣ
+		)
+		REFERENCES "Apply" ( -- �������̺�
+			"apply_post_number" -- �����Խù���ȣ
+		);
+
+-- ��Ī���̺�
+ALTER TABLE "Matching"
+	ADD
+		CONSTRAINT "FK_Recruit_TO_Matching" -- �������̺� -> ��Ī���̺�
+		FOREIGN KEY (
+			"recruit_post_number" -- ���ΰԽñ۹�ȣ
+		)
+		REFERENCES "Recruit" ( -- �������̺�
+			"recruit_post_number" -- ���ΰԽñ۹�ȣ
+		);
+
+-- �� ���̺�
+CREATE TABLE "COEFFIENTS_CN_1991" (
+	"INTERCEPT" FLOAT(126) NULL, -- �� �÷�
+	"CL"        FLOAT(126) NULL, -- �� �÷�2
+	"BAC"       FLOAT(126) NULL, -- �� �÷�3
+	"NO3N"      FLOAT(126) NULL, -- �� �÷�4
+	"PH"        FLOAT(126) NULL, -- �� �÷�5
+	"INCOME"    FLOAT(126) NULL, -- �� �÷�6
+	"K_ION"     FLOAT(126) NULL, -- �� �÷�7
+	"NH4_ION"   FLOAT(126) NULL, -- �� �÷�8
+	"SO4_ION"   FLOAT(126) NULL, -- �� �÷�9
+	"NO3_ION"   FLOAT(126) NULL  -- �� �÷�10
+);
+
+-- �� ���̺�2
+CREATE TABLE "COEFFIENTS_CN_2002" (
+	"INTERCEPT"  FLOAT(126) NULL, -- �� �÷�
+	"MNHAVGTA"   FLOAT(126) NULL, -- �� �÷�2
+	"MNHAVGWS"   FLOAT(126) NULL, -- �� �÷�3
+	"BAC"        FLOAT(126) NULL, -- �� �÷�4
+	"NO3N"       FLOAT(126) NULL, -- �� �÷�5
+	"PH"         FLOAT(126) NULL, -- �� �÷�6
+	"PRODUCTION" FLOAT(126) NULL, -- �� �÷�7
+	"K_ION"      FLOAT(126) NULL, -- �� �÷�8
+	"F_ION"      FLOAT(126) NULL, -- �� �÷�9
+	"NA_ION"     FLOAT(126) NULL  -- �� �÷�10
+);
+
+-- �� ���̺�3
+CREATE TABLE "COEFFIENTS_NJ_1991" (
+	"INTERCEPT"      FLOAT(126) NULL, -- �� �÷�
+	"BAC"            FLOAT(126) NULL, -- �� �÷�2
+	"NO3N"           FLOAT(126) NULL, -- �� �÷�3
+	"PH"             FLOAT(126) NULL, -- �� �÷�4
+	"MANAGEMENT_FEE" FLOAT(126) NULL, -- �� �÷�5
+	"K_ION"          FLOAT(126) NULL, -- �� �÷�6
+	"NH4_ION"        FLOAT(126) NULL, -- �� �÷�7
+	"NO3_ION"        FLOAT(126) NULL  -- �� �÷�8
+);
+
+-- �� ���̺�4
+CREATE TABLE "COEFFIENTS_NJ_2002" (
+	"INTERCEPT"       FLOAT(126) NULL, -- �� �÷�
+	"MNHAVGTA"        FLOAT(126) NULL, -- �� �÷�2
+	"MNHSUMRN"        FLOAT(126) NULL, -- �� �÷�3
+	"NO3N"            FLOAT(126) NULL, -- �� �÷�4
+	"MANAGEMENTS_FEE" FLOAT(126) NULL, -- �� �÷�5
+	"MG2_ION"         FLOAT(126) NULL, -- �� �÷�6
+	"NH4_ION"         FLOAT(126) NULL, -- �� �÷�7
+	"NO3_ION"         FLOAT(126) NULL, -- �� �÷�8
+	"K_ION"           FLOAT(126) NULL, -- �� �÷�9
+	"RAINFALL"        FLOAT(126) NULL  -- �� �÷�10
+);
+
+-- �� ���̺�6
+CREATE TABLE "COL_CORRELATED_NJ_1991_TODB" (
+	"CL"      FLOAT(126)  NULL, -- �� �÷�
+	"BAC"     FLOAT(126)  NULL, -- �� �÷�2
+	"NO3N"    FLOAT(126)  NULL, -- �� �÷�3
+	"PH"      FLOAT(126)  NULL, -- �� �÷�4
+	"INCOME"  FLOAT(126)  NULL, -- �� �÷�5
+	"K_ION"   FLOAT(126)  NULL, -- �� �÷�6
+	"NH4_ION" FLOAT(126)  NULL, -- �� �÷�7
+	"SO4_ION" FLOAT(126)  NULL, -- �� �÷�8
+	"NO3_ION" FLOAT(126)  NULL, -- �� �÷�9
+	"YM"      NUMBER(*,0) NULL  -- �� �÷�10
+);
+
+-- �� ���̺�7
+CREATE TABLE "COL_CORRELATED_CN_2002_TODB" (
+	"MNHAVGTA"   FLOAT(126)  NULL, -- �� �÷�
+	"MNHAVGWS"   FLOAT(126)  NULL, -- �� �÷�2
+	"BAC"        FLOAT(126)  NULL, -- �� �÷�3
+	"NO3N"       FLOAT(126)  NULL, -- �� �÷�4
+	"PH"         FLOAT(126)  NULL, -- �� �÷�5
+	"PRODUCTION" FLOAT(126)  NULL, -- �� �÷�6
+	"K_ION"      FLOAT(126)  NULL, -- �� �÷�7
+	"F_ION"      FLOAT(126)  NULL, -- �� �÷�8
+	"NA_ION"     FLOAT(126)  NULL, -- �� �÷�9
+	"YM"         NUMBER(*,0) NULL  -- �� �÷�10
+);
+
+-- �� ���̺�5
+CREATE TABLE "COL_CORRELATED_CN_1991_TODB" (
+	"CL"      FLOAT(126)  NULL, -- �� �÷�
+	"BAC"     FLOAT(126)  NULL, -- �� �÷�2
+	"NO3N"    FLOAT(126)  NULL, -- �� �÷�3
+	"PH"      FLOAT(126)  NULL, -- �� �÷�4
+	"INCOME"  FLOAT(126)  NULL, -- �� �÷�5
+	"K_ION"   FLOAT(126)  NULL, -- �� �÷�6
+	"NH4_ION" FLOAT(126)  NULL, -- �� �÷�7
+	"SO4_ION" FLOAT(126)  NULL, -- �� �÷�8
+	"NO3_ION" FLOAT(126)  NULL, -- �� �÷�9
+	"YM"      NUMBER(*,0) NULL  -- �� �÷�10
+);
+
+-- �� ���̺�9
+CREATE TABLE "COL_CORRELATED_NJ_2002_TODB" (
+	"MNHAVGTA"   FLOAT(126)  NULL, -- �� �÷�
+	"MNHAVGWS"   FLOAT(126)  NULL, -- �� �÷�2
+	"BAC"        FLOAT(126)  NULL, -- �� �÷�3
+	"NO3N"       FLOAT(126)  NULL, -- �� �÷�4
+	"PH"         FLOAT(126)  NULL, -- �� �÷�5
+	"PRODUCTION" FLOAT(126)  NULL, -- �� �÷�6
+	"K_ION"      FLOAT(126)  NULL, -- �� �÷�7
+	"F_ION"      FLOAT(126)  NULL, -- �� �÷�8
+	"NA_ION"     FLOAT(126)  NULL, -- �� �÷�9
+	"YM"         NUMBER(*,0) NULL  -- �� �÷�10
+);
+
+-- �� ���̺�10
+CREATE TABLE "MANPOWER_CN" (
+	"MANPOWER" FLOAT(126)   NULL, -- �� �÷�
+	"YM"       NUMBER(*,0)  NULL, -- �� �÷�2
+	"CITY"     VARCHAR(255) NULL  -- �� �÷�3
+);
+
+-- �� ���̺�11
+CREATE TABLE "MANPOWER_NJ" (
+	"MANPOWER" FLOAT(126)   NULL, -- �� �÷�
+	"YM"       NUMBER(*,0)  NULL, -- �� �÷�2
+	"CITY"     VARCHAR(255) NULL  -- �� �÷�3
+);
+
+-- �� ���̺�12
+CREATE TABLE "MANPOWER_RNN_CN" (
+	"MANPOWER" FLOAT(126)   NULL, -- �� �÷�
+	"YM"       NUMBER(*,0)  NULL, -- �� �÷�2
+	"CITY"     VARCHAR(255) NULL  -- �� �÷�3
+);
+
+-- �� ���̺�13
+CREATE TABLE "MANPOWER_RNN_NJ" (
+	"MANPOWER" FLOAT(126)   NULL, -- �� �÷�
+	"YM"       NUMBER(*,0)  NULL, -- �� �÷�2
+	"CITY"     VARCHAR(255) NULL  -- �� �÷�3
+);
+

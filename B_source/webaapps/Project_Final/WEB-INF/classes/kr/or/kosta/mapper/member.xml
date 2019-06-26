@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+	<select id="membernumberall" resultType="int">
+		select member_number from member
+	</select>
+	<select id="checkmember" parameterType="String"
+		resultType="String">
+		<!-- <select id="checkmember" parameterType="map" resultType="String"> -->
+		select member_number from member where member_number=#{member_number}
+	</select>
+
+	<!-- <select id="checkmember" parameterType="string" resultType="string"> -->
+	<!-- select member_number from member where member_number=#{member_number} -->
+	<!-- </select> -->
+
+	<insert id="join" parameterType="mvo">
+		insert into member values(#{member_id},#{member_name},#{member_password},#{member_gender},sysdate,
+		#{member_email},#{member_job_search},#{member_address},#{member_phonenumber},#{member_searchcount},1,member_seq.nextVal)
+	</insert><!-- 회원가입 쿼리문 -->
+	<select id="idChk" parameterType="String" resultType="int">
+		select count(*) cnt from member
+		where member_id=#{member_id}
+	</select><!-- id존재여부 체크 -->
+	<select id="loginchk" parameterType="mvo" resultType="mvo">
+		select count(*) cnt, member_name from member
+		where member_id=#{member_id}
+		and member_password=#{member_password}
+		group by member_name
+	</select><!-- 로그인 정보 확인 -->
+	<select id="memnum" parameterType="mvo" resultType="int">
+		select member_number from member
+		where member_id=#{member_id}
+	</select>
+	<select id="gradechk" parameterType="mvo" resultType="int">
+		select member_grade from member where member_id=#{member_id}
+	</select>
+
+	<!-- 마이페이지 >> 계정설정에서 정보 변경시 저장되니 값이 있으면 세팅해놓기 위해 데이터를 가져오는 쿼리 ks -->
+	<select id="getUserInfo" resultType="mvo" parameterType="String">
+		select member_birth, member_picture from member where member_id = #{userId}
+	</select>
+
+	<!-- 마이페이지 >> 계정설정에서 정보 변경시, 입력값이 없는 부분에 한해선 업데이트를 하지 않도록 다이나믹쿼리 사용. 정보 
+		수정시 해당 값이 입력되지 않으면 입력한 값만 수정하도록 다이나믹 쿼리 사용 ks -->
+	<update id="updateUserInfo" parameterType="mvo">
+		update member
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="member_password != '' ">
+				member_password = #{member_password},
+			</if>
+			<if test="member_birth != '' ">
+				member_birth = #{member_birth},
+			</if>
+			<if test="member_picture != '' ">
+				member_picture = #{member_picture}
+			</if>
+		</trim>
+		where member_id = #{member_id}
+	</update>
+
+	<!-- 계정탈퇴 시 사용 ks -->
+	<update id="outUserAccount">
+		update member set active_check_number = 2 where member_id = #{user_id}
+	</update>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="apply">
+
+<insert id="insert" parameterType="avo">
+	  	insert into apply values(
+	  	apply_seq.nextVal,
+	  	#{member_id},
+	  	0,
+	  	sysdate,
+	  	#{apply_title},
+	  	to_date(#{apply_deadline}),
+	  	#{apply_area},
+	  	#{apply_crops},
+	  	#{apply_startworktime},
+	  	#{apply_endworktime},
+	  	#{apply_salay},
+	  	#{apply_content},
+	  	#{apply_career},
+		1	  	
+	  	)
+  	</insert>
+  	
+  	<select id="list" resultType="map">
+  	select * from apply
+  </select>
+  
+  <select id="board" parameterType="string" resultType="map">
+  	select * from apply where apply_post_number=#{apply_post_number}
+  </select>
+  
+  
+    <update id="views" parameterType="String">
+ 		update apply set VIEWS = VIEWS+1 where apply_post_number=#{num}
+ 	</update>
+ 	
+ 	<insert id="submit" parameterType="hashmap">
+	  	insert into matching(matching_number,apply_post_number,matching_id,matching_date) values(
+	  	matching_seq.nextVal,
+	  	#{apply_number},
+	  	#{uid},
+	  	sysdate	  	
+	  	)
+  	</insert>
+</mapper>

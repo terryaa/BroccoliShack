@@ -1,0 +1,25 @@
+# 소스부분
+a1.sources = src-1
+a1.sources.src-1.type = spooldir
+a1.sources.src-1.channels = c1
+a1.sources.src-1.spoolDir = /home/hadoop/data/processed_data/
+a1.sources.src-1.fileHeader = true
+a1.sources.src-1.deletePolicy=immediate
+a1.sources.src-1.recursiveDirectorySearch=true
+# 채널부분
+a1.channels = c1
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 10000
+a1.channels.c1.transactionCapacity = 10000
+a1.channels.c1.byteCapacityBufferPercentage = 20
+a1.channels.c1.byteCapacity = 800000
+#저장부분
+a1.sinks = k1
+a1.sinks.k1.type = hdfs
+a1.sinks.k1.channel = c1
+a1.sinks.k1.hdfs.path = %{file}/..
+a1.sinks.k1.hdfs.fileType=DataStream
+#a1.sinks.k1.hdfs.filePrefix = %{basename}
+a1.sinks.k1.hdfs.round = true
+a1.sinks.k1.hdfs.roundValue = 10
+a1.sinks.k1.hdfs.roundUnit = minute

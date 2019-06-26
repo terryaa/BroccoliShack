@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="manpower">
+<select id="getmanpower_cn" parameterType="int" resultType="mpvo">
+   <![CDATA[
+select * from manpower_cn where ym > #{year}
+]]>
+</select>
+<select id="getmanpower_nj" parameterType="int" resultType="mpvo">
+   <![CDATA[
+select * from manpower_nj where ym > #{year}
+]]>
+</select>
+</mapper>

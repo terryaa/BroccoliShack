@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+	<context:component-scan
+		base-package="kr.or.kosta.mvc">
+		<!-- 보통 도메인을 많이 사용. mvc위치는 프로젝트명이 대부분. -->
+	</context:component-scan>
+
+	<mvc:annotation-driven />
+
+	<!-- 웹에서 접근하도록 매핑 -->
+
+	<mvc:resources location="/resource/"
+		mapping="/resource/**"></mvc:resources>
+    <mvc:resources location="/css/" mapping="/css/**"/>
+
+    <mvc:resources location="/img/" mapping="/img/**"/>
+    
+    <mvc:resources location="/lib/" mapping="/lib/**"></mvc:resources>
+    
+    <mvc:resources location="/contactform/" mapping="/contactform/**"></mvc:resources>
+	<!-- 
+	<bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
+		<property name="order" value="0"></property>
+	</bean> -->
+	<!-- 뷰리졸버 보다 먼저 실행되도록 order를 0순위로 만듬.(뷰리졸버는 1순위)order= handler 매핑의 우선순위 -->
+	<!-- 
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles/tiles-definitions.xml</value>
+			</list>
+		</property>
+	</bean>
+	 -->
+	
+	<!-- 트랜젝션 처리 -->
+	<bean id="tm"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 공통 빈 이라는 개념이 생성. -->
+	<tx:annotation-driven transaction-manager="tm" />
+</beans>

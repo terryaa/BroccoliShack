@@ -1,0 +1,5 @@
+﻿CREATE TABLE matching(
+hired float,
+self float,
+ym int
+);
